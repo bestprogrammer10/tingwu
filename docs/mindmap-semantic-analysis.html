@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语义分析服务 - 业务流程脑图</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            background: white;
+            font-family: 'Microsoft YaHei', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 1800px;
+            background: white;
+        }
+        .diagram-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="diagram-title">语义分析服务 - 业务流程</h1>
+        <svg viewBox="0 0 1800 800" xmlns="http://www.w3.org/2000/svg">
+            <!-- 定义渐变 -->
+            <defs>
+                <linearGradient id="centerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#667eea"/>
+                    <stop offset="100%" style="stop-color:#764ba2"/>
+                </linearGradient>
+                <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#a18cd1"/>
+                    <stop offset="100%" style="stop-color:#fbc2eb"/>
+                </linearGradient>
+                <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#f093fb"/>
+                    <stop offset="100%" style="stop-color:#f5576c"/>
+                </linearGradient>
+                <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#43e97b"/>
+                    <stop offset="100%" style="stop-color:#38f9d7"/>
+                </linearGradient>
+                <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#4facfe"/>
+                    <stop offset="100%" style="stop-color:#00f2fe"/>
+                </linearGradient>
+            </defs>
+            
+            <!-- ==================== 连接线 ==================== -->
+            <!-- 左侧连接线 -->
+            <path d="M 650 400 C 500 400, 450 100, 380 100" stroke="#a18cd1" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M 650 400 C 480 400, 420 220, 350 220" stroke="#a18cd1" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M 650 400 C 480 400, 420 340, 350 340" stroke="#a18cd1" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M 650 400 C 480 400, 420 460, 350 460" stroke="#a18cd1" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M 650 400 C 480 400, 420 580, 350 580" stroke="#a18cd1" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M 650 400 C 500 400, 450 700, 380 700" stroke="#a18cd1" stroke-width="3" fill="none" opacity="0.6"/>
+            
+            <!-- 右侧连接线 -->
+            <path d="M 1150 400 C 1300 400, 1350 160, 1420 160" stroke="#52c41a" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M 1150 400 C 1320 400, 1380 280, 1450 280" stroke="#52c41a" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M 1150 400 C 1320 400, 1380 400, 1450 400" stroke="#52c41a" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M 1150 400 C 1320 400, 1380 520, 1450 520" stroke="#52c41a" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M 1150 400 C 1300 400, 1350 640, 1420 640" stroke="#1890ff" stroke-width="3" fill="none" opacity="0.6"/>
+            
+            <!-- ==================== 中心节点 ==================== -->
+            <ellipse cx="900" cy="400" rx="200" ry="80" fill="url(#centerGrad)" filter="drop-shadow(0 8px 16px rgba(102,126,234,0.3))"/>
+            <text x="900" y="390" text-anchor="middle" fill="white" font-size="28" font-weight="bold">AI语义</text>
+            <text x="900" y="430" text-anchor="middle" fill="white" font-size="28" font-weight="bold">分析服务</text>
+            
+            <!-- ==================== 左侧节点（输入端） ==================== -->
+            <!-- 节点1: 接收文本 -->
+            <rect x="100" y="70" width="280" height="60" rx="30" fill="url(#purpleGrad)" filter="drop-shadow(0 4px 12px rgba(161,140,209,0.3))"/>
+            <text x="145" y="110" fill="white" font-size="22" font-weight="bold">① 接收文本</text>
+            <text x="145" y="145" fill="rgba(255,255,255,0.8)" font-size="16">从语音识别获取转写文本</text>
+            
+            <!-- 节点2: 说话人判断 -->
+            <rect x="70" y="190" width="280" height="60" rx="30" fill="white" stroke="#a18cd1" stroke-width="3"/>
+            <text x="115" y="230" fill="#722ed1" font-size="20" font-weight="bold">② 角色判断</text>
+            <text x="115" y="265" fill="#999" font-size="16">识别销售员/顾客身份</text>
+            
+            <!-- 节点3: 上下文管理 -->
+            <rect x="70" y="310" width="280" height="60" rx="30" fill="white" stroke="#a18cd1" stroke-width="3"/>
+            <text x="115" y="350" fill="#722ed1" font-size="20" font-weight="bold">③ 上下文管理</text>
+            <text x="115" y="385" fill="#999" font-size="16">维护最近3轮对话</text>
+            
+            <!-- 节点4: 对话缓存 -->
+            <rect x="70" y="430" width="280" height="60" rx="30" fill="white" stroke="#a18cd1" stroke-width="3"/>
+            <text x="115" y="470" fill="#722ed1" font-size="20" font-weight="bold">④ 对话缓存</text>
+            <text x="115" y="505" fill="#999" font-size="16">等待双方发言完成</text>
+            
+            <!-- 节点5: Prompt构建 -->
+            <rect x="70" y="550" width="280" height="60" rx="30" fill="white" stroke="#a18cd1" stroke-width="3"/>
+            <text x="115" y="590" fill="#722ed1" font-size="20" font-weight="bold">⑤ Prompt构建</text>
+            <text x="115" y="625" fill="#999" font-size="16">组合历史+当前对话</text>
+            
+            <!-- 节点6: 调用大模型 -->
+            <rect x="100" y="670" width="280" height="60" rx="30" fill="url(#orangeGrad)" filter="drop-shadow(0 4px 12px rgba(245,87,108,0.3))"/>
+            <text x="145" y="710" fill="white" font-size="22" font-weight="bold">⑥ 调用大模型</text>
+            <text x="145" y="745" fill="rgba(255,255,255,0.8)" font-size="16">发送请求到AI服务</text>
+            
+            <!-- ==================== 右侧节点（输出端） ==================== -->
+            <!-- 节点7: 流式接收 -->
+            <rect x="1420" y="130" width="280" height="60" rx="30" fill="url(#greenGrad)" filter="drop-shadow(0 4px 12px rgba(82,196,26,0.3))"/>
+            <text x="1465" y="170" fill="white" font-size="22" font-weight="bold">⑦ 流式接收</text>
+            <text x="1465" y="205" fill="rgba(255,255,255,0.8)" font-size="16">SSE实时返回结果</text>
+            
+            <!-- 节点8: 结果解析 -->
+            <rect x="1450" y="250" width="280" height="60" rx="30" fill="white" stroke="#52c41a" stroke-width="3"/>
+            <text x="1495" y="290" fill="#389e0d" font-size="20" font-weight="bold">⑧ 结果解析</text>
+            <text x="1495" y="325" fill="#999" font-size="16">解析JSON格式响应</text>
+            
+            <!-- 节点9: 需求识别 -->
+            <rect x="1450" y="370" width="280" height="60" rx="30" fill="white" stroke="#52c41a" stroke-width="3"/>
+            <text x="1495" y="410" fill="#389e0d" font-size="20" font-weight="bold">⑨ 需求识别</text>
+            <text x="1495" y="445" fill="#999" font-size="16">分析顾客用药需求</text>
+            
+            <!-- 节点10: 智能推荐 -->
+            <rect x="1450" y="490" width="280" height="60" rx="30" fill="white" stroke="#52c41a" stroke-width="3"/>
+            <text x="1495" y="530" fill="#389e0d" font-size="20" font-weight="bold">⑩ 智能推荐</text>
+            <text x="1495" y="565" fill="#999" font-size="16">推荐药品/追问建议</text>
+            
+            <!-- 节点11: 循环分析 -->
+            <rect x="1420" y="610" width="280" height="60" rx="30" fill="url(#blueGrad)" filter="drop-shadow(0 4px 12px rgba(24,144,255,0.3))"/>
+            <text x="1465" y="650" fill="white" font-size="22" font-weight="bold">⑪ 循环分析</text>
+            <text x="1465" y="685" fill="rgba(255,255,255,0.8)" font-size="16">新对话自动触发分析</text>
+            
+            <!-- ==================== 标签 ==================== -->
+            <text x="240" y="40" text-anchor="middle" fill="#722ed1" font-size="18" font-weight="bold">数据准备</text>
+            <text x="1560" y="100" text-anchor="middle" fill="#52c41a" font-size="18" font-weight="bold">分析输出</text>
+        </svg>
+    </div>
+</body>
+</html>

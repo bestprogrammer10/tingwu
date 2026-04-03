@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实时语音转文字 - 业务流程脑图</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            background: white;
+            font-family: 'Microsoft YaHei', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 1800px;
+            background: white;
+        }
+        .diagram-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="diagram-title">实时语音转文字 - 业务流程</h1>
+        <svg viewBox="0 0 1800 700" xmlns="http://www.w3.org/2000/svg">
+            <!-- 定义渐变 -->
+            <defs>
+                <linearGradient id="centerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#667eea"/>
+                    <stop offset="100%" style="stop-color:#764ba2"/>
+                </linearGradient>
+                <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#f093fb"/>
+                    <stop offset="100%" style="stop-color:#f5576c"/>
+                </linearGradient>
+                <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#4facfe"/>
+                    <stop offset="100%" style="stop-color:#00f2fe"/>
+                </linearGradient>
+                <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#43e97b"/>
+                    <stop offset="100%" style="stop-color:#38f9d7"/>
+                </linearGradient>
+                <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                    <polygon points="0 0, 10 3, 0 6" fill="#ccc"/>
+                </marker>
+            </defs>
+            
+            <!-- ==================== 连接线 ==================== -->
+            <!-- 左侧连接线 -->
+            <path d="M 650 350 C 500 350, 450 120, 380 120" stroke="#f5576c" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M 650 350 C 480 350, 420 240, 350 240" stroke="#f5576c" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M 650 350 C 480 350, 420 460, 350 460" stroke="#f5576c" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M 650 350 C 500 350, 450 580, 380 580" stroke="#f5576c" stroke-width="3" fill="none" opacity="0.6"/>
+            
+            <!-- 右侧连接线 -->
+            <path d="M 1150 350 C 1300 350, 1350 120, 1420 120" stroke="#1890ff" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M 1150 350 C 1320 350, 1380 240, 1450 240" stroke="#1890ff" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M 1150 350 C 1320 350, 1380 460, 1450 460" stroke="#1890ff" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M 1150 350 C 1300 350, 1350 580, 1420 580" stroke="#52c41a" stroke-width="3" fill="none" opacity="0.6"/>
+            
+            <!-- ==================== 中心节点 ==================== -->
+            <ellipse cx="900" cy="350" rx="200" ry="80" fill="url(#centerGrad)" filter="drop-shadow(0 8px 16px rgba(102,126,234,0.3))"/>
+            <text x="900" y="340" text-anchor="middle" fill="white" font-size="28" font-weight="bold">实时语音</text>
+            <text x="900" y="380" text-anchor="middle" fill="white" font-size="28" font-weight="bold">转文字</text>
+            
+            <!-- ==================== 左侧节点（输入端） ==================== -->
+            <!-- 节点1: 开始录音 -->
+            <rect x="100" y="90" width="280" height="60" rx="30" fill="url(#pinkGrad)" filter="drop-shadow(0 4px 12px rgba(245,87,108,0.3))"/>
+            <text x="145" y="130" fill="white" font-size="22" font-weight="bold">① 开始录音</text>
+            
+            <!-- 节点2: 音频采集 -->
+            <rect x="70" y="210" width="280" height="60" rx="30" fill="white" stroke="#f5576c" stroke-width="3"/>
+            <text x="115" y="250" fill="#c41d7f" font-size="20" font-weight="bold">② 音频采集</text>
+            <text x="115" y="285" fill="#999" font-size="16">麦克风实时采集声音</text>
+            
+            <!-- 节点3: 数据编码 -->
+            <rect x="70" y="430" width="280" height="60" rx="30" fill="white" stroke="#f5576c" stroke-width="3"/>
+            <text x="115" y="470" fill="#c41d7f" font-size="20" font-weight="bold">③ 数据编码</text>
+            <text x="115" y="505" fill="#999" font-size="16">PCM格式音频封装</text>
+            
+            <!-- 节点4: 流式传输 -->
+            <rect x="100" y="550" width="280" height="60" rx="30" fill="white" stroke="#f5576c" stroke-width="3"/>
+            <text x="145" y="590" fill="#c41d7f" font-size="20" font-weight="bold">④ 流式传输</text>
+            <text x="145" y="625" fill="#999" font-size="16">实时发送到云端</text>
+            
+            <!-- ==================== 右侧节点（输出端） ==================== -->
+            <!-- 节点5: 语音识别 -->
+            <rect x="1420" y="90" width="280" height="60" rx="30" fill="url(#blueGrad)" filter="drop-shadow(0 4px 12px rgba(24,144,255,0.3))"/>
+            <text x="1465" y="130" fill="white" font-size="22" font-weight="bold">⑤ 语音识别</text>
+            <text x="1465" y="165" fill="rgba(255,255,255,0.8)" font-size="16">云端AI模型处理</text>
+            
+            <!-- 节点6: 说话人分离 -->
+            <rect x="1450" y="210" width="280" height="60" rx="30" fill="white" stroke="#1890ff" stroke-width="3"/>
+            <text x="1495" y="250" fill="#0050b3" font-size="20" font-weight="bold">⑥ 说话人分离</text>
+            <text x="1495" y="285" fill="#999" font-size="16">区分销售员与顾客</text>
+            
+            <!-- 节点7: 文本生成 -->
+            <rect x="1450" y="430" width="280" height="60" rx="30" fill="white" stroke="#1890ff" stroke-width="3"/>
+            <text x="1495" y="470" fill="#0050b3" font-size="20" font-weight="bold">⑦ 文本生成</text>
+            <text x="1495" y="505" fill="#999" font-size="16">添加标点符号分段</text>
+            
+            <!-- 节点8: 输出结果 -->
+            <rect x="1420" y="550" width="280" height="60" rx="30" fill="url(#greenGrad)" filter="drop-shadow(0 4px 12px rgba(82,196,26,0.3))"/>
+            <text x="1465" y="590" fill="white" font-size="22" font-weight="bold">⑧ 输出结果</text>
+            <text x="1465" y="625" fill="rgba(255,255,255,0.8)" font-size="16">实时返回识别文本</text>
+            
+            <!-- ==================== 标签 ==================== -->
+            <text x="240" y="50" text-anchor="middle" fill="#f5576c" font-size="18" font-weight="bold">输入端</text>
+            <text x="1560" y="50" text-anchor="middle" fill="#1890ff" font-size="18" font-weight="bold">输出端</text>
+        </svg>
+    </div>
+</body>
+</html>

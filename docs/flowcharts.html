@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>业务流程图 - 听悟AI服务</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-blue: #1a365d;
+            --secondary-blue: #2c5282;
+            --accent-blue: #4299e1;
+            --light-blue: #bee3f8;
+            --green: #38a169;
+            --green-light: #9ae6b4;
+            --orange: #dd6b20;
+            --orange-light: #fbd38d;
+            --bg-gradient-start: #f7fafc;
+            --bg-gradient-end: #e2e8f0;
+            --text-dark: #1a202c;
+            --text-light: #4a5568;
+            --white: #ffffff;
+            --shadow-soft: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+            --shadow-card: 0 4px 20px rgba(26, 54, 93, 0.15);
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            padding: 40px;
+        }
+        
+        .flowchart-container {
+            max-width: 1920px;
+            margin: 0 auto;
+        }
+        
+        /* Flowchart 1: Voice Recognition */
+        .flowchart {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 48px;
+            margin-bottom: 60px;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .flowchart::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent-blue) 0%, var(--green) 100%);
+        }
+        
+        .flow-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .flow-number {
+            display: inline-block;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--secondary-blue) 100%);
+            border-radius: 50%;
+            color: var(--white);
+            font-weight: 900;
+            font-size: 24px;
+            line-height: 56px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 20px rgba(66, 153, 225, 0.4);
+        }
+        
+        .flow-title {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--primary-blue);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .flow-subtitle {
+            font-size: 16px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        /* SVG Flowchart Styles */
+        .svg-flow {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+        }
+        
+        /* Node Styles */
+        .node-rect {
+            fill: var(--white);
+            stroke: var(--accent-blue);
+            stroke-width: 2;
+            rx: 12;
+        }
+        
+        .node-rect.start {
+            fill: var(--green);
+            stroke: var(--green);
+        }
+        
+        .node-rect.process {
+            fill: var(--white);
+            stroke: var(--accent-blue);
+        }
+        
+        .node-rect.cloud {
+            fill: linear-gradient(135deg, var(--light-blue) 0%, var(--white) 100%);
+            stroke: var(--secondary-blue);
+            stroke-width: 3;
+        }
+        
+        .node-rect.decision {
+            fill: var(--white);
+            stroke: var(--orange);
+            stroke-width: 2;
+        }
+        
+        .node-rect.end {
+            fill: var(--secondary-blue);
+            stroke: var(--primary-blue);
+        }
+        
+        .node-text {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            fill: var(--text-dark);
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+        
+        .node-text.white {
+            fill: var(--white);
+            font-weight: 700;
+        }
+        
+        .node-text.code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            fill: var(--secondary-blue);
+            font-weight: 600;
+        }
+        
+        .node-subtext {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 11px;
+            fill: var(--text-light);
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+        
+        /* Connector Styles */
+        .connector {
+            fill: none;
+            stroke: var(--secondary-blue);
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+        
+        .connector-arrow {
+            fill: var(--secondary-blue);
+        }
+        
+        .connector.green {
+            stroke: var(--green);
+        }
+        
+        .connector.orange {
+            stroke: var(--orange);
+        }
+        
+        /* Step Numbers */
+        .step-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            fill: var(--white);
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+        
+        .step-circle {
+            fill: var(--accent-blue);
+        }
+        
+        /* Legend */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--light-blue);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-light);
+        }
+        
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid;
+        }
+        
+        .legend-box.process {
+            border-color: var(--accent-blue);
+            background: var(--white);
+        }
+        
+        .legend-box.cloud {
+            border-color: var(--secondary-blue);
+            background: linear-gradient(135deg, var(--light-blue) 0%, var(--white) 100%);
+        }
+        
+        .legend-box.start {
+            border-color: var(--green);
+            background: var(--green);
+        }
+        
+        /* Flowchart 2 Specific */
+        .flowchart.semantic::before {
+            background: linear-gradient(90deg, var(--accent-blue) 0%, var(--orange) 100%);
+        }
+        
+        .diamond {
+            fill: var(--white);
+            stroke: var(--orange);
+            stroke-width: 2;
+        }
+        
+        .loop-arc {
+            fill: none;
+            stroke: var(--orange);
+            stroke-width: 2;
+            stroke-dasharray: 6,4;
+        }
+        
+        /* Decision Labels */
+        .decision-label {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            fill: var(--green);
+        }
+        
+        .decision-label.no {
+            fill: var(--orange);
+        }
+        
+        /* Icon Styles */
+        .icon-bg {
+            fill: var(--light-blue);
+        }
+        
+        .icon-path {
+            fill: none;
+            stroke: var(--secondary-blue);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+    </style>
+</head>
+<body>
+    <div class="flowchart-container">
+        <!-- Flowchart 1: Voice Recognition -->
+        <div class="flowchart" id="flow1">
+            <div class="flow-header">
+                <div class="flow-number">1</div>
+                <h1 class="flow-title">语音实时识别服务</h1>
+                <p class="flow-subtitle">基于阿里云NLS的实时语音识别与说话人分离</p>
+            </div>
+            
+            <svg class="svg-flow" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
+                <!-- Background Grid -->
+                <defs>
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+                    </pattern>
+                    <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#bee3f8;stop-opacity:0.5" />
+                        <stop offset="100%" style="stop-color:#ffffff;stop-opacity:1" />
+                    </linearGradient>
+                    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="rgba(26,54,93,0.15)"/>
+                    </filter>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)"/>
+                
+                <!-- Step 1: User Request -->
+                <g transform="translate(100, 80)">
+                    <circle cx="0" cy="0" r="18" class="step-circle"/>
+                    <text x="0" y="1" class="step-number">1</text>
+                    <rect x="-70" y="30" width="140" height="70" class="node-rect start" filter="url(#shadow)" rx="12"/>
+                    <text x="0" y="55" class="node-text white">用户发起请求</text>
+                    <text x="0" y="75" class="node-text white code">POST /api/tingwu/realtime/start</text>
+                </g>
+                
+                <!-- Connector 1-2 -->
+                <path d="M 100 180 L 100 210" class="connector"/>
+                <polygon points="100,220 95,210 105,210" class="connector-arrow"/>
+                
+                <!-- Step 2: Controller -->
+                <g transform="translate(100, 250)">
+                    <circle cx="0" cy="0" r="18" class="step-circle"/>
+                    <text x="0" y="1" class="step-number">2</text>
+                    <rect x="-90" y="30" width="180" height="60" class="node-rect process" filter="url(#shadow)"/>
+                    <text x="0" y="60" class="node-text">TingwuRealtimeController</text>
+                    <text x="0" y="78" class="node-subtext">接收并处理请求</text>
+                </g>
+                
+                <!-- Connector 2-3 -->
+                <path d="M 100 340 L 100 370" class="connector"/>
+                <polygon points="100,380 95,370 105,370" class="connector-arrow"/>
+                
+                <!-- Step 3: TingwuService -->
+                <g transform="translate(100, 410)">
+                    <circle cx="0" cy="0" r="18" class="step-circle"/>
+                    <text x="0" y="1" class="step-number">3</text>
+                    <rect x="-85" y="30" width="170" height="60" class="node-rect process" filter="url(#shadow)"/>
+                    <text x="0" y="55" class="node-text">TingwuService</text>
+                    <text x="0" y="75" class="node-subtext">创建阿里云听悟任务</text>
+                </g>
+                
+                <!-- Horizontal Connector to WebSocket -->
+                <path d="M 190 440 L 320 440" class="connector"/>
+                <polygon points="330,440 320,435 320,445" class="connector-arrow"/>
+                
+                <!-- Step 4: WebSocket Service -->
+                <g transform="translate(410, 440)">
+                    <circle cx="0" cy="0" r="18" class="step-circle"/>
+                    <text x="0" y="1" class="step-number">4</text>
+                    <rect x="-95" y="30" width="190" height="60" class="node-rect process" filter="url(#shadow)"/>
+                    <text x="0" y="55" class="node-text">TingwuWebSocketService</text>
+                    <text x="0" y="75" class="node-subtext">建立 WebSocket 连接</text>
+                </g>
+                
+                <!-- Connector to Audio Capture -->
+                <path d="M 505 440 L 630 440" class="connector"/>
+                <polygon points="640,440 630,435 630,445" class="connector-arrow"/>
+                
+                <!-- Step 5: Audio Capture -->
+                <g transform="translate(720, 440)">
+                    <circle cx="0" cy="0" r="18" class="step-circle"/>
+                    <text x="0" y="1" class="step-number">5</text>
+                    <rect x="-85" y="30" width="170" height="70" class="node-rect process" filter="url(#shadow)" style="stroke: var(--green);"/>
+                    <text x="0" y="55" class="node-text" style="fill: var(--green); font-weight: 700;">启动麦克风采集</text>
+                    <text x="0" y="75" class="node-subtext">16kHz/16bit/单声道 PCM</text>
+                </g>
+                
+                <!-- Connector to Data Transfer -->
+                <path d="M 805 440 L 940 440" class="connector green"/>
+                <polygon points="950,440 940,435 940,445" class="connector-arrow" style="fill: var(--green);"/>
+                
+                <!-- Step 6-7: Data Transfer Loop -->
+                <g transform="translate(1040, 440)">
+                    <circle cx="0" cy="0" r="18" class="step-circle" style="fill: var(--green);"/>
+                    <text x="0" y="1" class="step-number">6/7</text>
+                    <rect x="-90" y="30" width="180" height="70" class="node-rect process" filter="url(#shadow)" style="stroke: var(--green); stroke-width: 2;"/>
+                    <text x="0" y="55" class="node-text" style="fill: var(--green); font-weight: 700;">音频数据传输</text>
+                    <text x="0" y="75" class="node-subtext">每次 3200 字节 → WebSocket</text>
+                </g>
+                
+                <!-- Vertical Connector to Cloud -->
+                <path d="M 1040 550 L 1040 580 L 850 580 L 850 550" class="connector green"/>
+                <polygon points="850,540 860,550 840,550" class="connector-arrow" style="fill: var(--green);"/>
+                
+                <!-- Step 8: Alibaba Cloud NLS -->
+                <g transform="translate(720, 470)" style="opacity: 0;">
+                    <!-- Spacer for alignment -->
+                </g>
+                
+                <!-- Cloud Service Group -->
+                <g transform="translate(720, 250)">
+                    <!-- Cloud Background -->
+                    <ellipse cx="0" cy="20" rx="140" ry="90" fill="url(#cloudGrad)" stroke="#2c5282" stroke-width="3" filter="url(#shadow)"/>
+                    
+                    <!-- Cloud Icon -->
+                    <g transform="translate(-60, -20)">
+                        <ellipse cx="30" cy="25" rx="20" ry="15" fill="#bee3f8" opacity="0.8"/>
+                        <ellipse cx="50" cy="20" rx="25" ry="18" fill="#bee3f8" opacity="0.8"/>
+                        <ellipse cx="75" cy="25" rx="20" ry="15" fill="#bee3f8" opacity="0.8"/>
+                        <rect x="30" y="35" width="45" height="15" fill="#bee3f8" opacity="0.8"/>
+                    </g>
+                    
+                    <text x="0" y="25" class="node-text" style="font-size: 16px; font-weight: 700; fill: var(--primary-blue);">阿里云 NLS 服务</text>
+                    <text x="0" y="48" class="node-subtext" style="font-size: 12px;">实时语音识别 + 说话人分离</text>
+                    <text x="0" y="65" class="node-subtext" style="font-size: 11px; fill: var(--green); font-weight: 600;">销售员 / 顾客</text>
+                    
+                    <!-- Step Number on Cloud -->
+                    <circle cx="-110" cy="-50" r="16" class="step-circle" style="fill: var(--secondary-blue);"/>
+                    <text x="-110" y="-49" class="step-number" style="font-size: 11px;">8</text>
+                </g>
+                
+                <!-- Connector from Cloud to Result -->
+                <path d="M 580 250 L 420 250" class="connector"/>
+                <polygon points="410,250 420,245 420,255" class="connector-arrow"/>
+                
+                <!-- Step 9: Callback -->
+                <g transform="translate(320, 250)">
+                    <circle cx="0" cy="0" r="18" class="step-circle"/>
+                    <text x="0" y="1" class="step-number">9</text>
+                    <rect x="-70" y="30" width="140" height="60" class="node-rect process" filter="url(#shadow)" style="stroke: var(--orange);"/>
+                    <text x="0" y="55" class="node-text" style="fill: var(--orange); font-weight: 600;">onSentenceEnd</text>
+                    <text x="0" y="75" class="node-subtext">回调返回转写结果</text>
+                </g>
+                
+                <!-- Connector to Output -->
+                <path d="M 250 280 L 100 280" class="connector orange"/>
+                <polygon points="90,280 100,275 100,285" class="connector-arrow" style="fill: var(--orange);"/>
+                
+                <!-- Step 10: Output -->
+                <g transform="translate(100, 110)" style="display: none;">
+                    <!-- Hidden, handled in flow -->
+                </g>
+                
+                <!-- Reconnect to show output -->
+                <path d="M 100 280 L 100 240" class="connector" style="opacity: 0;"/>
+                
+                <!-- Final Output -->
+                <g transform="translate(320, 110)">
+                    <circle cx="0" cy="0" r="18" class="step-circle" style="fill: var(--secondary-blue);"/>
+                    <text x="0" y="1" class="step-number">10</text>
+                    <rect x="-75" y="30" width="150" height="60" class="node-rect end" filter="url(#shadow)" rx="30"/>
+                    <text x="0" y="60" class="node-text white">输出转写文本</text>
+                </g>
+                
+                <!-- Data Flow Arrow -->
+                <g transform="translate(550, 80)">
+                    <rect x="-80" y="-15" width="160" height="30" fill="var(--light-blue)" rx="15" opacity="0.5"/>
+                    <text x="0" y="5" class="node-subtext" style="font-size: 12px; font-weight: 600; fill: var(--secondary-blue);">实时数据流 →</text>
+                </g>
+            </svg>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-box process"></div>
+                    <span>处理步骤</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box cloud"></div>
+                    <span>云服务</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box start" style="background: var(--green);"></div>
+                    <span>开始/数据流</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Flowchart 2: Semantic Analysis -->
+        <div class="flowchart semantic" id="flow2">
+            <div class="flow-header">
+                <div class="flow-number" style="background: linear-gradient(135deg, var(--orange) 0%, var(--secondary-blue) 100%);">2</div>
+                <h1 class="flow-title">语义分析服务</h1>
+                <p class="flow-subtitle">基于AI大模型的智能对话分析与意图识别</p>
+            </div>
+            
+            <svg class="svg-flow" viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg">
+                <!-- Background Grid -->
+                <defs>
+                    <linearGradient id="aiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#fbd38d;stop-opacity:0.3" />
+                        <stop offset="100%" style="stop-color:#ffffff;stop-opacity:1" />
+                    </linearGradient>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#2c5282"/>
+                    </marker>
+                    <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#38a169"/>
+                    </marker>
+                    <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#dd6b20"/>
+                    </marker>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)"/>
+                
+                <!-- Step 1: Receive Transcription -->
+                <g transform="translate(100, 80)">
+                    <circle cx="0" cy="0" r="18" class="step-circle" style="fill: var(--orange);"/>
+                    <text x="0" y="1" class="step-number">1</text>
+                    <rect x="-80" y="30" width="160" height="60" class="node-rect process" filter="url(#shadow)" style="stroke: var(--orange);"/>
+                    <text x="0" y="55" class="node-text" style="fill: var(--orange); font-weight: 600;">收到转写结果</text>
+                    <text x="0" y="75" class="node-subtext">onSentenceEnd 回调触发</text>
+                </g>
+                
+                <!-- Connector to Decision -->
+                <path d="M 100 170 L 100 200" class="connector" marker-end="url(#arrowhead)"/>
+                
+                <!-- Step 2: Decision Diamond -->
+                <g transform="translate(100, 270)">
+                    <circle cx="0" cy="-70" r="18" class="step-circle"/>
+                    <text x="0" y="-69" class="step-number">2</text>
+                    <polygon points="0,-40 80,0 0,40 -80,0" class="diamond" filter="url(#shadow)"/>
+                    <text x="0" y="-5" class="node-text" style="font-size: 13px;">两个说话人</text>
+                    <text x="0" y="12" class="node-text" style="font-size: 13px;">都有内容？</text>
+                    <text x="90" y="0" class="decision-label">是 →</text>
+                    <text x="-90" y="0" class="decision-label no">← 否</text>
+                </g>
+                
+                <!-- No Path (dashed, returns) -->
+                <path d="M 20 270 L -50 270 L -50 80 L 20 80" class="loop-arc" marker-end="url(#arrowhead-orange)"/>
+                <text x="-80" y="180" class="decision-label no" style="font-size: 10px;">继续监听</text>
+                
+                <!-- Yes Path -->
+                <path d="M 180 270 L 280 270" class="connector green" marker-end="url(#arrowhead-green)"/>
+                
+                <!-- Step 3: Context Manager -->
+                <g transform="translate(380, 270)">
+                    <circle cx="0" cy="0" r="18" class="step-circle" style="fill: var(--green);"/>
+                    <text x="0" y="1" class="step-number">3</text>
+                    <rect x="-85" y="30" width="170" height="60" class="node-rect process" filter="url(#shadow)" style="stroke: var(--green); stroke-width: 2;"/>
+                    <text x="0" y="55" class="node-text" style="fill: var(--green); font-weight: 700;">ContextManager</text>
+                    <text x="0" y="75" class="node-subtext">添加对话到上下文</text>
+                </g>
+                
+                <!-- Connector -->
+                <path d="M 465 300 L 550 300" class="connector green" marker-end="url(#arrowhead-green)"/>
+                
+                <!-- Step 4: Queue Management -->
+                <g transform="translate(650, 270)">
+                    <circle cx="0" cy="0" r="18" class="step-circle" style="fill: var(--green);"/>
+                    <text x="0" y="1" class="step-number">4</text>
+                    <rect x="-80" y="30" width="160" height="60" class="node-rect process" filter="url(#shadow)" style="stroke: var(--green);"/>
+                    <text x="0" y="55" class="node-text" style="fill: var(--green); font-weight: 600;">维护最近3轮对话</text>
+                    <text x="0" y="75" class="node-subtext">Queue (FIFO 策略)</text>
+                </g>
+                
+                <!-- Connector -->
+                <path d="M 650 360 L 650 390" class="connector green" marker-end="url(#arrowhead-green)"/>
+                
+                <!-- Step 5: Build Prompt -->
+                <g transform="translate(650, 460)">
+                    <circle cx="0" cy="0" r="18" class="step-circle" style="fill: var(--secondary-blue);"/>
+                    <text x="0" y="1" class="step-number">5</text>
+                    <rect x="-80" y="30" width="160" height="60" class="node-rect process" filter="url(#shadow)" style="stroke: var(--secondary-blue); stroke-width: 2;"/>
+                    <text x="0" y="55" class="node-text" style="font-weight: 700;">构建 Prompt</text>
+                    <text x="0" y="75" class="node-subtext">包含历史对话上下文</text>
+                </g>
+                
+                <!-- Connector to LLM -->
+                <path d="M 650 550 L 650 580 L 850 580" class="connector" marker-end="url(#arrowhead)"/>
+                
+                <!-- Step 6-7: LLM Service -->
+                <g transform="translate(950, 550)">
+                    <circle cx="0" cy="-70" r="18" class="step-circle" style="fill: var(--secondary-blue);"/>
+                    <text x="0" y="-69" class="step-number">6/7</text>
+                    <rect x="-100" y="-30" width="200" height="70" class="node-rect cloud" filter="url(#shadow)" rx="16" style="fill: url(#aiGrad); stroke: var(--orange); stroke-width: 3;"/>
+                    
+                    <!-- AI Icon -->
+                    <g transform="translate(-80, -15)">
+                        <circle cx="15" cy="15" r="12" fill="none" stroke="#dd6b20" stroke-width="2"/>
+                        <path d="M10 15 L20 15 M15 10 L15 20" stroke="#dd6b20" stroke-width="2"/>
+                        <circle cx="15" cy="15" r="4" fill="#dd6b20"/>
+                    </g>
+                    
+                    <text x="15" y="10" class="node-text" style="font-size: 14px; font-weight: 700; fill: var(--primary-blue);">LlmService.streamAnalyze</text>
+                    <text x="15" y="30" class="node-subtext" style="font-size: 11px;">调用第三方大模型 API (DeepSeek)</text>
+                </g>
+                
+                <!-- HTTP Request Detail -->
+                <g transform="translate(950, 640)">
+                    <rect x="-110" y="-15" width="220" height="30" fill="#fbd38d" rx="15" opacity="0.4"/>
+                    <text x="0" y="5" class="node-subtext" style="font-size: 12px; font-weight: 600; fill: var(--orange);">HTTP POST (OpenAI 兼容格式)</text>
+                </g>
+                
+                <!-- Return Arrow to Analysis -->
+                <path d="M 950 620 L 950 680 L 750 680 L 750 550 L 570 550" class="connector orange" marker-end="url(#arrowhead-orange)" style="stroke-dasharray: 8,4;"/>
+                <text x="800" y="665" class="decision-label no" style="font-size: 11px;">SSE 流式返回</text>
+                
+                <!-- Step 8-10: Output Processing -->
+                <g transform="translate(380, 550)">
+                    <circle cx="0" cy="0" r="18" class="step-circle" style="fill: var(--secondary-blue);"/>
+                    <text x="0" y="1" class="step-number">8-10</text>
+                    <rect x="-120" y="30" width="240" height="90" class="node-rect process" filter="url(#shadow)" style="stroke: var(--secondary-blue); stroke-width: 2;"/>
+                    <text x="0" y="55" class="node-text" style="font-weight: 700;">ConsoleOutputService</text>
+                    <text x="0" y="75" class="node-subtext">实时接收 chunks，解析 JSON</text>
+                    <text x="0" y="95" class="node-subtext" style="fill: var(--green); font-weight: 600;">输出：需求/药品/紧急度/置信度</text>
+                </g>
+                
+                <!-- Final Decision Loop -->
+                <path d="M 380 640 L 380 680 L 100 680 L 100 360" class="loop-arc" marker-end="url(#arrowhead)"/>
+                
+                <!-- Loop Label -->
+                <g transform="translate(240, 695)">
+                    <rect x="-60" y="-12" width="120" height="24" fill="var(--light-blue)" rx="12"/>
+                    <text x="0" y="4" class="node-subtext" style="font-size: 11px; font-weight: 600; fill: var(--secondary-blue);">有新对话? 是 → 继续分析</text>
+                </g>
+                
+                <!-- Wait State -->
+                <g transform="translate(100, 520)">
+                    <ellipse cx="0" cy="0" rx="70" ry="35" fill="#e2e8f0" stroke="#718096" stroke-width="1" stroke-dasharray="5,3"/>
+                    <text x="0" y="-5" class="node-subtext" style="font-size: 12px;">等待下一轮</text>
+                    <text x="0" y="12" class="node-subtext" style="font-size: 11px; fill: var(--orange);">否 →</text>
+                </g>
+                
+                <!-- Legend Icons -->
+                <g transform="translate(1050, 80)">
+                    <rect x="0" y="0" width="120" height="140" fill="white" rx="8" filter="url(#shadow)" opacity="0.9"/>
+                    <text x="60" y="20" class="node-text" style="font-size: 11px; font-weight: 700;">图例说明</text>
+                    
+                    <polygon points="20,45 35,52 20,59" fill="#38a169"/>
+                    <text x="50" y="55" class="node-subtext" style="font-size: 10px; text-anchor: start;">成功/是</text>
+                    
+                    <polygon points="20,75 35,82 20,89" fill="#dd6b20"/>
+                    <text x="50" y="85" class="node-subtext" style="font-size: 10px; text-anchor: start;">返回/流</text>
+                    
+                    <ellipse cx="27" cy="115" rx="20" ry="10" fill="#e2e8f0" stroke="#718096" stroke-dasharray="3,2"/>
+                    <text x="50" y="120" class="node-subtext" style="font-size: 10px; text-anchor: start;">等待状态</text>
+                </g>
+            </svg>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-box process"></div>
+                    <span>处理步骤</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box cloud"></div>
+                    <span>AI 模型服务</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: var(--white); border-color: var(--orange); border-width: 2px; border-radius: 0; transform: rotate(45deg); width: 16px; height: 16px;"></div>
+                    <span>判断决策</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

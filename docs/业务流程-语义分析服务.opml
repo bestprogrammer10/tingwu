@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head>
+    <title>语义分析服务 - 业务流程图</title>
+  </head>
+  <body>
+    <outline text="语义分析服务">
+      <outline text="开始">
+        <outline text="收到语音转写的文字"/>
+      </outline>
+      <outline text="对话收集">
+        <outline text="缓存当前轮对话"/>
+        <outline text="判断：是否收集到完整对话？">
+          <outline text="否 - 继续等待新对话"/>
+          <outline text="是 - 进入分析"/>
+        </outline>
+      </outline>
+      <outline text="上下文管理">
+        <outline text="保留最近3轮历史对话"/>
+        <outline text="构建分析Prompt"/>
+      </outline>
+      <outline text="AI分析">
+        <outline text="发送给大模型API"/>
+        <outline text="流式返回分析结果"/>
+      </outline>
+      <outline text="输出结果">
+        <outline text="顾客需求（如：退烧药、感冒药）"/>
+        <outline text="推荐药品类别"/>
+        <outline text="紧急程度"/>
+        <outline text="建议追问"/>
+      </outline>
+      <outline text="循环判断">
+        <outline text="是否有新对话？">
+          <outline text="是 - 返回继续分析"/>
+          <outline text="否 - 等待下一轮"/>
+        </outline>
+      </outline>
+      <outline text="结束"/>
+    </outline>
+  </body>
+</opml>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>业务流程图</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .diagram-container {
+            background: white;
+            padding: 60px 80px;
+            margin: 40px auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            max-width: 1400px;
+        }
+        .diagram-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a1a1a;
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #1890ff;
+        }
+        .flow-item {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+        }
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-right: 30px;
+        }
+        .step-content {
+            flex: 1;
+            background: #f8f9fa;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 20px 25px;
+            position: relative;
+        }
+        .step-content:hover {
+            border-color: #1890ff;
+            box-shadow: 0 4px 12px rgba(24, 144, 255, 0.15);
+        }
+        .step-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+        .step-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+        .arrow {
+            text-align: center;
+            color: #1890ff;
+            font-size: 30px;
+            margin: 15px 0 15px 80px;
+        }
+        .decision-box {
+            background: #fff7e6;
+            border: 2px solid #ffa940;
+        }
+        .decision-box .step-title {
+            color: #d46b08;
+        }
+        .api-box {
+            background: #e6f7ff;
+            border: 2px solid #1890ff;
+        }
+        .service-box {
+            background: #f6ffed;
+            border: 2px solid #52c41a;
+        }
+        .output-box {
+            background: #fff0f6;
+            border: 2px solid #eb2f96;
+        }
+        .cloud-box {
+            background: linear-gradient(135deg, #f0f5ff 0%, #e6f7ff 100%);
+            border: 2px solid #597ef7;
+        }
+        .loop-arrow {
+            text-align: center;
+            color: #52c41a;
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        .note {
+            background: #fffbe6;
+            border-left: 4px solid #fadb14;
+            padding: 15px 20px;
+            margin: 30px 0 30px 80px;
+            font-size: 14px;
+            color: #666;
+            border-radius: 4px;
+        }
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #d9d9d9, transparent);
+            margin: 60px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- ==================== 流程一：语音实时识别服务 ==================== -->
+    <div class="diagram-container" id="flow1">
+        <h1 class="diagram-title">语音实时识别服务流程</h1>
+        
+        <div class="flow-item">
+            <div class="step-number">1</div>
+            <div class="step-content api-box">
+                <div class="step-title">用户发起请求</div>
+                <div class="step-desc">调用接口：POST /api/tingwu/realtime/start</div>
+            </div>
+        </div>
+        <div class="arrow">↓</div>
+        
+        <div class="flow-item">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <div class="step-title">创建实时转写任务</div>
+                <div class="step-desc">TingwuService 调用阿里云听悟 API，获取任务ID和连接地址</div>
+            </div>
+        </div>
+        <div class="arrow">↓</div>
+        
+        <div class="flow-item">
+            <div class="step-number">3</div>
+            <div class="step-content service-box">
+                <div class="step-title">建立 WebSocket 连接</div>
+                <div class="step-desc">TingwuWebSocketService 连接阿里云 NLS 实时语音识别服务</div>
+            </div>
+        </div>
+        <div class="arrow">↓</div>
+        
+        <div class="flow-item">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <div class="step-title">启动麦克风采集</div>
+                <div class="step-desc">采集音频格式：16kHz / 16bit / 单声道 PCM，每次发送 3200 字节</div>
+            </div>
+        </div>
+        <div class="arrow">↓</div>
+        
+        <div class="flow-item">
+            <div class="step-number">5</div>
+            <div class="step-content cloud-box">
+                <div class="step-title">实时语音识别</div>
+                <div class="step-desc">阿里云 NLS 服务进行实时语音转文字</div>
+            </div>
+        </div>
+        <div class="arrow">↓</div>
+        
+        <div class="flow-item">
+            <div class="step-number">6</div>
+            <div class="step-content cloud-box">
+                <div class="step-title">说话人分离</div>
+                <div class="step-desc">识别并区分"销售员"和"顾客"两个角色</div>
+            </div>
+        </div>
+        <div class="arrow">↓</div>
+        
+        <div class="flow-item">
+            <div class="step-number">7</div>
+            <div class="step-content output-box">
+                <div class="step-title">返回转写结果</div>
+                <div class="step-desc">句子结束时触发 onSentenceEnd 回调，输出转写文本</div>
+            </div>
+        </div>
+        
+        <div class="note">
+            <strong>技术要点：</strong>使用阿里云 NLS SDK 实现实时语音识别，支持说话人分离，延迟约 200-500ms
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ==================== 流程二：语义分析服务 ==================== -->
+    <div class="diagram-container" id="flow2">
+        <h1 class="diagram-title">语义分析服务流程（AI大模型）</h1>
+        
+        <div class="flow-item">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <div class="step-title">接收转写结果</div>
+                <div class="step-desc">从语音识别服务获取句子级别的转写文本</div>
+            </div>
+        </div>
+        <div class="arrow">↓</div>
+        
+        <div class="flow-item">
+            <div class="step-number">2</div>
+            <div class="step-content decision-box">
+                <div class="step-title">判断：两个说话人都有内容？</div>
+                <div class="step-desc">等待销售员和顾客都说话后，才触发分析</div>
+            </div>
+        </div>
+        <div class="arrow">↓</div>
+        
+        <div class="flow-item">
+            <div class="step-number">3</div>
+            <div class="step-content service-box">
+                <div class="step-title">添加对话到上下文</div>
+                <div class="step-desc">ContextManager 维护最近 3 轮对话历史（Queue FIFO）</div>
+            </div>
+        </div>
+        <div class="arrow">↓</div>
+        
+        <div class="flow-item">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <div class="step-title">构建分析 Prompt</div>
+                <div class="step-desc">将历史对话和当前输入组合成结构化 Prompt</div>
+            </div>
+        </div>
+        <div class="arrow">↓</div>
+        
+        <div class="flow-item">
+            <div class="step-number">5</div>
+            <div class="step-content api-box">
+                <div class="step-title">调用大模型 API</div>
+                <div class="step-desc">LlmService 发送请求到第三方大模型（OpenAI 兼容格式）</div>
+            </div>
+        </div>
+        <div class="arrow">↓</div>
+        
+        <div class="flow-item">
+            <div class="step-number">6</div>
+            <div class="step-content cloud-box">
+                <div class="step-title">大模型分析</div>
+                <div class="step-desc">AI 模型理解对话内容，分析顾客用药需求</div>
+            </div>
+        </div>
+        <div class="arrow">↓</div>
+        
+        <div class="flow-item">
+            <div class="step-number">7</div>
+            <div class="step-content service-box">
+                <div class="step-title">流式返回结果</div>
+                <div class="step-desc">通过 SSE 流式接收 AI 回复，实时解析 JSON</div>
+            </div>
+        </div>
+        <div class="arrow">↓</div>
+        
+        <div class="flow-item">
+            <div class="step-number">8</div>
+            <div class="step-content output-box">
+                <div class="step-title">输出分析结果</div>
+                <div class="step-desc">顾客需求、推荐药品、紧急程度、置信度、建议追问</div>
+            </div>
+        </div>
+        <div class="arrow">↓</div>
+        
+        <div class="flow-item">
+            <div class="step-number">9</div>
+            <div class="step-content decision-box">
+                <div class="step-title">判断：有新对话？</div>
+                <div class="step-desc">分析期间有新对话产生</div>
+            </div>
+        </div>
+        <div class="loop-arrow">↓ 是（循环）</div>
+        <div style="margin-left: 80px; color: #52c41a; font-size: 14px; margin-bottom: 20px;">
+            ↑___________________________________|
+        </div>
+        <div style="margin-left: 80px; color: #999; font-size: 14px; margin-bottom: 30px;">
+            否 → 等待下一轮对话
+        </div>
+        
+        <div class="note">
+            <strong>技术要点：</strong>使用 OpenAI 兼容 API 格式，支持流式输出（SSE），维护 3 轮对话上下文确保分析连贯性
+        </div>
+    </div>
+</body>
+</html>
