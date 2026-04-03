@@ -1,0 +1,47 @@
+# Spring Boot 应用配置
+
+# 服务器配置
+server:
+  port: 8080
+
+# Spring 配置
+spring:
+  application:
+    name: demo
+
+  # 开发环境配置
+  profiles:
+    active: dev
+
+  # 热部署配置
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.example.demo: DEBUG
+
+# 阿里云听悟配置
+aliyun:
+  tingwu:
+    # 阿里云账号 AccessKey（请通过环境变量配置）
+    access-key-id: ${ALIYUN_ACCESS_KEY_ID}
+    access-key-secret: ${ALIYUN_ACCESS_KEY_SECRET}
+    # 听悟控制台创建的 AppKey（请通过环境变量配置）
+    app-key: ${TINGWU_APP_KEY}
+    # 服务区域
+    region: cn-beijing
+    # 端点
+    endpoint: tingwu.cn-beijing.aliyuncs.com
+    # 大模型配置（请通过环境变量配置）
+    llm:
+      api-base-url: ${LLM_API_URL}
+      api-key: ${LLM_API_KEY}
+      model: ${LLM_MODEL:deepseek/deepseek-r1-0528}
+      timeout: 5000
+      response-format: json
